@@ -10,7 +10,7 @@ return {
           topdelete = { text = "‾" },
           changedelete = { text = "~" },
         },
-        current_line_blame = true, -- Habilita o blame virtual inline
+        current_line_blame = true,
       })
     end,
   },
