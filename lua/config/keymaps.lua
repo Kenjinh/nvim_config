@@ -55,7 +55,16 @@ map("v", ">", ">gv")
 map("i", "jk", "<esc>")
 map("v", "jk", "<esc>")
 
-map("t", "<leader>T", [[<C-\><C -N>:q!<CR>]])
+local function toggle_root_terminal()
+  Snacks.terminal(nil, { cwd = LazyVim.root() })
+end
+
+vim.defer_fn(function()
+  vim.keymap.set({ "n", "t" }, "<C-/>", toggle_root_terminal, { desc = "Terminal (Root Dir)", silent = true })
+  vim.keymap.set({ "n", "t" }, "<C-_>", toggle_root_terminal, { desc = "Terminal (Root Dir)", silent = true })
+  vim.keymap.set("t", "<leader>T", [[<C-\><C-N>:q!<CR>]], { desc = "Close Terminal", silent = true })
+end, 100)
+
 map("n", "<M-C-W>", ":w<CR>")
 
 map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")

@@ -12,18 +12,15 @@ return {
   -- disable trouble
   -- { "folke/trouble.nvim", enabled = false },
 
-  -- transparent
   {
-    "xiyaowong/transparent.nvim",
-    cmd = {
-      "TransparentEnable",
-      "TransparentDisable",
-      "TransparentToggle",
-    },
+    "mg979/vim-visual-multi",
+    event = "VeryLazy",
   },
 
   {
-    "mg979/vim-visual-multi",
-    event = "VeryLazy"
-  }
+    "linux-cultist/venv-selector.nvim",
+    enabled = function()
+      return vim.fn.executable("fd") == 1 or vim.fn.executable("fdfind") == 1 or vim.fn.executable("fd_find") == 1
+    end,
+  },
 }
