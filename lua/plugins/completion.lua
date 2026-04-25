@@ -1,6 +1,15 @@
 return {
   {
     "supermaven-inc/supermaven-nvim",
+    event = "InsertEnter",
+    cond = function()
+      local log_path = vim.fs.joinpath(vim.fn.stdpath("cache"), "supermaven-nvim.log")
+      local ok, file = pcall(io.open, log_path, "a")
+      if file then
+        file:close()
+      end
+      return ok and file ~= nil
+    end,
     config = function()
       require("supermaven-nvim").setup({
         keymaps = {

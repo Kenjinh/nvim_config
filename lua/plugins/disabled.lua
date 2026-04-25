@@ -15,4 +15,24 @@ return {
     "flash.nvim",
     enabled = false,
   },
+  {
+    "nvim-dap",
+    enabled = false,
+  },
+  {
+    "nvim-dap-ui",
+    enabled = false,
+  },
+  {
+    "nvim-dap-virtual-text",
+    enabled = false,
+  },
+  {
+    "nvim-dap-python",
+    enabled = false,
+  },
+  {
+    "mason-nvim-dap.nvim",
+    enabled = false,
+  },
 }
