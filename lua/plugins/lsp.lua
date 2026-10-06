@@ -1,0 +1,95 @@
+return {
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      "mason-org/mason-lspconfig.nvim",
+      "hrsh7th/cmp-nvim-lsp",
+      {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+          library = {
+            -- See the configuration section for more details
+            -- Load luvit types when the `vim.uv` word is found
+            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+          },
+        },
+      },
+    },
+    config = function()
+      vim.diagnostic.config({
+        virtual_text = true,  -- Mostra erros inline
+        signs = true,         -- Mostra sinais na coluna
+        underline = true,     -- Sublinha erros
+        update_in_insert = false,
+        severity_sort = true,
+      })
+      require("mason-lspconfig").setup({
+        automatic_enable = false,
+        ensure_installed = {
+          -- LSPs
+          "ruff",
+          "taplo",
+          "lua_ls",
+          "ts_ls",
+          "pyright",
+          "tailwindcss",
+        },
+      })
+
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      local on_attach = function(_, bufnr)
+        local map = vim.keymap.set
+        local opts = { buffer = bufnr, noremap = true, silent = true }
+
+        map("n", "gd", vim.lsp.buf.definition, opts)
+        map("n", "K", vim.lsp.buf.hover, opts)
+        map("n", "<leader>rn", vim.lsp.buf.rename, opts)
+        map("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+      end
+
+      vim.lsp.config("pyright", {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+      vim.lsp.enable("pyright")
+
+      vim.lsp.config("ruff", {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+      vim.lsp.enable("ruff")
+
+      vim.lsp.config("ts_ls", {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+      vim.lsp.enable("ts_ls")
+
+      vim.lsp.config("lua_ls", {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+      vim.lsp.enable("lua_ls")
+
+      vim.lsp.config("tailwindcss", {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+          tailwindCSS = {
+            experimental = {
+              classRegex = {
+                { "cva\\(([^)]*)\\)",     "[\"'`]([^\"'`]*).*?[\"'`]" },
+                { "cn\\(([^)]*)\\)",      "[\"'`]([^\"'`]*).*?[\"'`]" },
+                { "clsx\\(([^)]*)\\)",    "[\"'`]([^\"'`]*).*?[\"'`]" },
+                { "twMerge\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+              },
+            },
+          },
+        },
+      })
+      vim.lsp.enable("tailwindcss")
+    end,
+  },
+}
